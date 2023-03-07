@@ -190,4 +190,25 @@ describe('"Backstage passes for Re:Factor": Quality drops to 0 after the confere
     });
 });
 
+describe('"Backstage passes for HAXX": Quality drops to 0 after the conference', () => {
+    const items: Item[] = [new Item("Backstage passes for HAXX", 1, 10), new Item("Backstage passes for HAXX", 0, 0), new Item("Backstage passes for HAXX", -5, 0)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    test('check when there is 1 day left', () => {
+        expect(app.items[0].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[0].sellIn).toEqual(0);
+        expect(app.items[0].quality).toEqual(13);
+    });
+    test('check when there are 0 days left', () => {
+        expect(app.items[1].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[1].sellIn).toEqual(-1);
+        expect(app.items[1].quality).toEqual(0);
+    });
+    test('check when there are -5 days left', () => {
+        expect(app.items[2].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[2].sellIn).toEqual(-6);
+        expect(app.items[2].quality).toEqual(0);
+    });
+});
+
 // TODO: add tests for Smelly items
