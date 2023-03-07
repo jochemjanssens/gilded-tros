@@ -189,3 +189,5 @@ describe('"Backstage passes for Re:Factor": Quality drops to 0 after the confere
         expect(app.items[2].quality).toEqual(0);
     });
 });
+
+// TODO: add tests for Smelly items
