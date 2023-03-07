@@ -116,3 +116,55 @@ describe('"B-DAWG Keychain", being a legendary item, never has to be sold or dec
         expect(app.items[2].quality).toEqual(0);
     });
 });
+
+describe('"Backstage passes for Re:Factor": Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less', () => {
+    const items: Item[] = [new Item("Backstage passes for Re:Factor", 12, 10), new Item("Backstage passes for Re:Factor", 10, 10), new Item("Backstage passes for Re:Factor", 5, 10), new Item("Backstage passes for Re:Factor", 2, 10)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    test('check when there are more then 10 days left', () => {
+        expect(app.items[0].name).toEqual('Backstage passes for Re:Factor');
+        expect(app.items[0].sellIn).toEqual(11);
+        expect(app.items[0].quality).toEqual(11);
+    });
+    test('check when there are exact 10 days left', () => {
+        expect(app.items[1].name).toEqual('Backstage passes for Re:Factor');
+        expect(app.items[1].sellIn).toEqual(9);
+        expect(app.items[1].quality).toEqual(12);
+    });
+    test('check when there are 5 days left', () => {
+        expect(app.items[2].name).toEqual('Backstage passes for Re:Factor');
+        expect(app.items[2].sellIn).toEqual(4);
+        expect(app.items[2].quality).toEqual(13);
+    });
+    test('check when there are 2 days left', () => {
+        expect(app.items[3].name).toEqual('Backstage passes for Re:Factor');
+        expect(app.items[3].sellIn).toEqual(1);
+        expect(app.items[3].quality).toEqual(13);
+    });
+});
+
+describe('"Backstage passes for HAXX": Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less', () => {
+    const items: Item[] = [new Item("Backstage passes for HAXX", 12, 10), new Item("Backstage passes for HAXX", 10, 10), new Item("Backstage passes for HAXX", 5, 10), new Item("Backstage passes for HAXX", 2, 10)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    test('check when there are more then 10 days left', () => {
+        expect(app.items[0].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[0].sellIn).toEqual(11);
+        expect(app.items[0].quality).toEqual(11);
+    });
+    test('check when there are exact 10 days left', () => {
+        expect(app.items[1].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[1].sellIn).toEqual(9);
+        expect(app.items[1].quality).toEqual(12);
+    });
+    test('check when there are 5 days left', () => {
+        expect(app.items[2].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[2].sellIn).toEqual(4);
+        expect(app.items[2].quality).toEqual(13);
+    });
+    test('check when there are 2 days left', () => {
+        expect(app.items[3].name).toEqual('Backstage passes for HAXX');
+        expect(app.items[3].sellIn).toEqual(1);
+        expect(app.items[3].quality).toEqual(13);
+    });
+});
