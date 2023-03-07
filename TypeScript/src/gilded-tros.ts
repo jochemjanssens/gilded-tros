@@ -1,59 +1,79 @@
 import {Item} from './item';
 
+const LEGENDARY_ITEMS = ['B-DAWG Keychain'];
+const MAX_QUALITY = 50;
+const LEGENDARY_QUALITY = 80;
+
 export class GildedTros {
 
     constructor(public items: Array<Item>) {
 
     }
 
-    public updateQuality(): void {
-        for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].name != 'Good Wine' && this.items[i].name != 'Backstage passes for Re:Factor'
-                && this.items[i].name != 'Backstage passes for HAXX') {
-                if (this.items[i].quality > 0) {
-                    if (this.items[i].name != 'B-DAWG Keychain') {
-                        this.items[i].quality = this.items[i].quality - 1;
-                    }
-                }
-            } else {
-                if (this.items[i].quality < 50) {
-                    this.items[i].quality = this.items[i].quality + 1;
+    private isBackstagePass = (item: Item): boolean => {
+        return item.name == 'Backstage passes for Re:Factor' || item.name == 'Backstage passes for HAXX';
+    }
 
-                    if (this.items[i].name == 'Backstage passes for Re:Factor' || this.items[i].name == 'Backstage passes for HAXX') {
-                        if (this.items[i].sellIn < 11) {
-                            if (this.items[i].quality < 50) {
-                                this.items[i].quality = this.items[i].quality + 1;
-                            }
-                        }
+    private isLegendary = (itemName: string): boolean => {
+        return LEGENDARY_ITEMS.some(LEGENDARY_ITEM => itemName === LEGENDARY_ITEM);
+    }
 
-                        if (this.items[i].sellIn < 6) {
-                            if (this.items[i].quality < 50) {
-                                this.items[i].quality = this.items[i].quality + 1;
-                            }
-                        }
-                    }
+    private updateItemQuality = (item: Item): Item => {
+        if (item.name != 'Good Wine' && !this.isBackstagePass(item)) {
+            if (item.quality > 0) {
+                if (!this.isLegendary(item.name)) {
+                    item.quality = item.quality - 1;
                 }
             }
+        } else {
+            if (item.quality < 50) {
+                item.quality = item.quality + 1;
 
-            if (this.items[i].name != 'B-DAWG Keychain') {
-                this.items[i].sellIn = this.items[i].sellIn - 1;
-            }
+                if (this.isBackstagePass(item)) {
+                    if (item.sellIn < 11) {
+                        item.quality = item.quality + 1;
+                    }
 
-            if (this.items[i].sellIn < 0) {
-                if (this.items[i].name != 'Good Wine') {
-                    if (this.items[i].name != 'Backstage passes for Re:Factor' && this.items[i].name != 'Backstage passes for HAXX') {
-                        if (this.items[i].quality > 0) {
-                            if (this.items[i].name != 'B-DAWG Keychain') {
-                                this.items[i].quality = this.items[i].quality - 1;
-                            }
-                        }
-                    } else {
-                        this.items[i].quality = this.items[i].quality - this.items[i].quality;
+                    if (item.sellIn < 6) {
+                        item.quality = item.quality + 1;
                     }
                 }
             }
         }
+
+        if (!this.isLegendary(item.name)) {
+            item.sellIn = item.sellIn - 1;
+        }
+
+        if (item.sellIn < 0) {
+            if (item.name != 'Good Wine') {
+                if (!this.isBackstagePass(item)) {
+                    if (item.quality > 0) {
+                        if (!this.isLegendary(item.name)) {
+                            item.quality = item.quality - 1;
+                        }
+                    }
+                } else {
+                    item.quality = item.quality - item.quality;
+                }
+            }
+        }
+
+        if (item.quality > MAX_QUALITY) {
+            item.quality = MAX_QUALITY;
+        }
+
+        if (this.isLegendary(item.name)) {
+            item.quality = LEGENDARY_QUALITY;
+        }
+
+        return item;
     }
 
+    public updateQuality(): void {
+        for (let i = 0; i < this.items.length; i++) {
+            this.items[i] = this.updateItemQuality(this.items[i]);
+        }
+    }
 }
 
