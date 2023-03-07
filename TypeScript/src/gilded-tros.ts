@@ -25,6 +25,13 @@ export class GildedTros {
     }
 
     private normalizeQuality = (item: Item): Item => {
+        if (this.isLegendary(item.name)) {
+            return {
+                ...item,
+                quality: LEGENDARY_QUALITY
+            };
+        }
+
         if (item.quality > MAX_QUALITY) {
             return {
                 ...item,
@@ -41,12 +48,9 @@ export class GildedTros {
         return item;
     }
 
-    private updateItemQuality = (item: Item): Item => {
+    private calculateItem = (item: Item): Item => {
         if (this.isLegendary(item.name)) {
-            return {
-                ...item,
-                quality: LEGENDARY_QUALITY
-            };
+            return item;
         }
 
         if (this.isBackstagePass(item.name)) {
@@ -66,7 +70,7 @@ export class GildedTros {
                 item.quality = 0;
             }
     
-            return this.normalizeQuality(item);
+            return item;
         }
         
         if (this.isSmellyItem(item.name)) {
@@ -77,14 +81,14 @@ export class GildedTros {
                 item.quality = item.quality - 2;
             }
             
-            return this.normalizeQuality(item);
+            return item;
         }
 
         if (item.name === 'Good Wine') {
             item.quality = item.quality + 1;
             item.sellIn = item.sellIn - 1;
             
-            return this.normalizeQuality(item);
+            return item;
         }
 
         item.quality = item.quality - 1;
@@ -94,12 +98,17 @@ export class GildedTros {
             item.quality = item.quality - 1;
         }
 
-        return this.normalizeQuality(item);
+        return item;
     }
+
+    private updateItem = (item: Item): Item => {
+        const calculatedItem = this.calculateItem(item)
+        return this.normalizeQuality(calculatedItem);
+    } 
 
     public updateQuality(): void {
         for (let i = 0; i < this.items.length; i++) {
-            this.items[i] = this.updateItemQuality(this.items[i]);
+            this.items[i] = this.updateItem(this.items[i]);
         }
     }
 }
