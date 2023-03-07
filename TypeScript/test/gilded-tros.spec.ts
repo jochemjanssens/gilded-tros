@@ -216,4 +216,28 @@ describe('"Backstage passes for HAXX": Quality drops to 0 after the conference',
     });
 });
 
-// TODO: add tests for Smelly items
+describe('Smelly items degrade in Quality twice as fast as normal items', () => {
+    const items: Item[] = [new Item("Duplicate Code", 10, 10), new Item("Duplicate Code", -4, 10), new Item("Long Methods", -4, 10), new Item("Ugly Variable Names", -4, 10)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    test('check when there are positive days left', () => {
+        expect(app.items[0].name).toEqual('Duplicate Code');
+        expect(app.items[0].sellIn).toEqual(9);
+        expect(app.items[0].quality).toEqual(8);
+    });
+    test('check when there are negative days left', () => {
+        expect(app.items[1].name).toEqual('Duplicate Code');
+        expect(app.items[1].sellIn).toEqual(-5);
+        expect(app.items[1].quality).toEqual(6);
+    });
+    test('check "Long Methods"', () => {
+        expect(app.items[2].name).toEqual('Long Methods');
+        expect(app.items[2].sellIn).toEqual(-5);
+        expect(app.items[2].quality).toEqual(6);
+    });
+    test('check "Ugly Variable Names"', () => {
+        expect(app.items[3].name).toEqual('Ugly Variable Names');
+        expect(app.items[3].sellIn).toEqual(-5);
+        expect(app.items[3].quality).toEqual(6);
+    });
+});
