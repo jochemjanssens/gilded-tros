@@ -19,7 +19,7 @@ export class GildedTros {
                 if (this.items[i].quality < 50) {
                     this.items[i].quality = this.items[i].quality + 1;
 
-                    if (this.items[i].name == 'Backstage passes for Re:Factor') {
+                    if (this.items[i].name == 'Backstage passes for Re:Factor' || this.items[i].name == 'Backstage passes for HAXX') {
                         if (this.items[i].sellIn < 11) {
                             if (this.items[i].quality < 50) {
                                 this.items[i].quality = this.items[i].quality + 1;
