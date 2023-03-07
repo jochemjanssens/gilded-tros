@@ -63,3 +63,24 @@ describe('The Quality of an item is never negative', () => {
         expect(app.items[2].quality).toEqual(0);
     });
 });
+
+describe('"Good Wine" actually increases in Quality the older it gets', () => {
+    const items: Item[] = [new Item('Good Wine', 5, 1), new Item('Good Wine', -5, 4), new Item('GoodWine', -5, 4)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    test('check first item object', () => {
+        expect(app.items[0].name).toEqual('Good Wine');
+        expect(app.items[0].sellIn).toEqual(4);
+        expect(app.items[0].quality).toEqual(2);
+    });
+    test('check second item object', () => {
+        expect(app.items[1].name).toEqual('Good Wine');
+        expect(app.items[1].sellIn).toEqual(-6);
+        expect(app.items[1].quality).toEqual(5);
+    });
+    test('check third item object', () => {
+        expect(app.items[2].name).toEqual('GoodWine');
+        expect(app.items[2].sellIn).toEqual(-6);
+        expect(app.items[2].quality).toEqual(2);
+    });
+});
