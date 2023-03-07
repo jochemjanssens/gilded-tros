@@ -19,6 +19,23 @@ export class GildedTros {
         return LEGENDARY_ITEMS.some(LEGENDARY_ITEM => itemName === LEGENDARY_ITEM);
     }
 
+    private normalizeQuality = (item: Item): Item => {
+        if (item.quality > MAX_QUALITY) {
+            return {
+                ...item,
+                quality: MAX_QUALITY
+            }
+        }
+
+        if (item.quality < 0) {
+            return {
+                ...item,
+                quality: 0
+            }
+        }
+        return item;
+    }
+
     private updateItemQuality = (item: Item): Item => {
         if (this.isLegendary(item.name)) {
             return {
@@ -27,45 +44,41 @@ export class GildedTros {
             };
         }
 
-        if (item.name != 'Good Wine' && !this.isBackstagePass(item.name)) {
-            if (item.quality > 0) {
-                item.quality = item.quality - 1;
-            }
-        } else {
-            if (item.quality < 50) {
+        if (this.isBackstagePass(item.name)) {
+            item.quality = item.quality + 1;
+
+            if (item.sellIn < 11) {
                 item.quality = item.quality + 1;
-
-                if (this.isBackstagePass(item.name)) {
-                    if (item.sellIn < 11) {
-                        item.quality = item.quality + 1;
-                    }
-
-                    if (item.sellIn < 6) {
-                        item.quality = item.quality + 1;
-                    }
-                }
             }
+
+            if (item.sellIn < 6) {
+                item.quality = item.quality + 1;
+            }
+
+            item.sellIn = item.sellIn - 1;
+
+            if (item.sellIn < 0) {
+                item.quality = 0;
+            }
+    
+            return this.normalizeQuality(item);
         }
 
+        if (item.name === 'Good Wine') {
+            item.quality = item.quality + 1;
+            item.sellIn = item.sellIn - 1;
+            
+            return this.normalizeQuality(item);
+        }
+
+        item.quality = item.quality - 1;
         item.sellIn = item.sellIn - 1;
 
         if (item.sellIn < 0) {
-            if (item.name != 'Good Wine') {
-                if (!this.isBackstagePass(item.name)) {
-                    if (item.quality > 0) {
-                        item.quality = item.quality - 1;
-                    }
-                } else {
-                    item.quality = item.quality - item.quality;
-                }
-            }
+            item.quality = item.quality - 1;
         }
 
-        if (item.quality > MAX_QUALITY) {
-            item.quality = MAX_QUALITY;
-        }
-
-        return item;
+        return this.normalizeQuality(item);
     }
 
     public updateQuality(): void {
