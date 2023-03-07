@@ -53,6 +53,8 @@ export class GildedTros {
             return item;
         }
 
+        item.sellIn = item.sellIn - 1;
+
         if (this.isBackstagePass(item.name)) {
             item.quality = item.quality + 1;
 
@@ -64,8 +66,6 @@ export class GildedTros {
                 item.quality = item.quality + 1;
             }
 
-            item.sellIn = item.sellIn - 1;
-
             if (item.sellIn < 0) {
                 item.quality = 0;
             }
@@ -75,7 +75,6 @@ export class GildedTros {
         
         if (this.isSmellyItem(item.name)) {
             item.quality = item.quality - 2;
-            item.sellIn = item.sellIn - 1;
 
             if (item.sellIn < 0) {
                 item.quality = item.quality - 2;
@@ -86,17 +85,11 @@ export class GildedTros {
 
         if (item.name === 'Good Wine') {
             item.quality = item.quality + 1;
-            item.sellIn = item.sellIn - 1;
             
             return item;
         }
 
-        item.quality = item.quality - 1;
-        item.sellIn = item.sellIn - 1;
-
-        if (item.sellIn < 0) {
-            item.quality = item.quality - 1;
-        }
+        item.quality = item.sellIn < 0 ? item.quality - 2 : item.quality - 1;
 
         return item;
     }
