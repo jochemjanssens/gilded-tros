@@ -10,3 +10,17 @@ Instructions can be found in the GildedTrosRequirements document.
 
 
 Have fun and good luck!
+
+## Rules
+- End of the day: SellIn-1 & Quality-1
+
+### Exceptions
+- SellIn <0  Quality - *2
+- Quality always >=0
+- Good Wine Quality +1
+- Quality always <=50 (Except legendary = 80)
+- "B-DAWG Keychain" fixed SellIn and Quality
+- "Backstage passes": Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+- "Backstage passes": Quality drops to 0 after the conference
+- Smelly items ("Duplicate Code", "Long Methods", "Ugly Variable Names") degrade in Quality twice as fast as normal items
+
