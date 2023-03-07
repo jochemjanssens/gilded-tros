@@ -2,6 +2,7 @@ import {Item} from './item';
 
 const LEGENDARY_ITEMS = ['B-DAWG Keychain'];
 const BACKSTAGE_PASSES = ['Backstage passes for Re:Factor', 'Backstage passes for HAXX'];
+const SMELLY_ITEMS = ["Duplicate Code", "Long Methods", "Ugly Variable Names"];
 const MAX_QUALITY = 50;
 const LEGENDARY_QUALITY = 80;
 
@@ -17,6 +18,10 @@ export class GildedTros {
 
     private isLegendary = (itemName: string): boolean => {
         return LEGENDARY_ITEMS.some(LEGENDARY_ITEM => itemName === LEGENDARY_ITEM);
+    }
+
+    private isSmellyItem = (itemName: string): boolean => {
+        return SMELLY_ITEMS.some(SMELLY_ITEM => itemName === SMELLY_ITEM);
     }
 
     private normalizeQuality = (item: Item): Item => {
@@ -61,6 +66,17 @@ export class GildedTros {
                 item.quality = 0;
             }
     
+            return this.normalizeQuality(item);
+        }
+        
+        if (this.isSmellyItem(item.name)) {
+            item.quality = item.quality - 2;
+            item.sellIn = item.sellIn - 1;
+
+            if (item.sellIn < 0) {
+                item.quality = item.quality - 2;
+            }
+            
             return this.normalizeQuality(item);
         }
 
