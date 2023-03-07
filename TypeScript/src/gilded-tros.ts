@@ -1,6 +1,7 @@
 import {Item} from './item';
 
 const LEGENDARY_ITEMS = ['B-DAWG Keychain'];
+const BACKSTAGE_PASSES = ['Backstage passes for Re:Factor', 'Backstage passes for HAXX'];
 const MAX_QUALITY = 50;
 const LEGENDARY_QUALITY = 80;
 
@@ -10,8 +11,8 @@ export class GildedTros {
 
     }
 
-    private isBackstagePass = (item: Item): boolean => {
-        return item.name == 'Backstage passes for Re:Factor' || item.name == 'Backstage passes for HAXX';
+    private isBackstagePass = (itemName: string): boolean => {
+        return BACKSTAGE_PASSES.some(BACKSTAGE_PASS => itemName === BACKSTAGE_PASS);
     }
 
     private isLegendary = (itemName: string): boolean => {
@@ -19,17 +20,22 @@ export class GildedTros {
     }
 
     private updateItemQuality = (item: Item): Item => {
-        if (item.name != 'Good Wine' && !this.isBackstagePass(item)) {
+        if (this.isLegendary(item.name)) {
+            return {
+                ...item,
+                quality: LEGENDARY_QUALITY
+            };
+        }
+
+        if (item.name != 'Good Wine' && !this.isBackstagePass(item.name)) {
             if (item.quality > 0) {
-                if (!this.isLegendary(item.name)) {
-                    item.quality = item.quality - 1;
-                }
+                item.quality = item.quality - 1;
             }
         } else {
             if (item.quality < 50) {
                 item.quality = item.quality + 1;
 
-                if (this.isBackstagePass(item)) {
+                if (this.isBackstagePass(item.name)) {
                     if (item.sellIn < 11) {
                         item.quality = item.quality + 1;
                     }
@@ -41,17 +47,13 @@ export class GildedTros {
             }
         }
 
-        if (!this.isLegendary(item.name)) {
-            item.sellIn = item.sellIn - 1;
-        }
+        item.sellIn = item.sellIn - 1;
 
         if (item.sellIn < 0) {
             if (item.name != 'Good Wine') {
-                if (!this.isBackstagePass(item)) {
+                if (!this.isBackstagePass(item.name)) {
                     if (item.quality > 0) {
-                        if (!this.isLegendary(item.name)) {
-                            item.quality = item.quality - 1;
-                        }
+                        item.quality = item.quality - 1;
                     }
                 } else {
                     item.quality = item.quality - item.quality;
@@ -61,10 +63,6 @@ export class GildedTros {
 
         if (item.quality > MAX_QUALITY) {
             item.quality = MAX_QUALITY;
-        }
-
-        if (this.isLegendary(item.name)) {
-            item.quality = LEGENDARY_QUALITY;
         }
 
         return item;
