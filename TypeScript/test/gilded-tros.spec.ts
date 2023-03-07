@@ -95,3 +95,24 @@ describe('The Quality of an item is never more than 50', () => {
         expect(app.items[0].quality).toEqual(50);
     });
 });
+
+describe('"B-DAWG Keychain", being a legendary item, never has to be sold or decreases in Quality', () => {
+    const items: Item[] = [new Item("B-DAWG Keychain", -2, 1), new Item("B-DAWG Keychain", -4, 0), new Item("B-DAWG Keychain", 2, 0)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    test('check first item object', () => {
+        expect(app.items[0].name).toEqual('B-DAWG Keychain');
+        expect(app.items[0].sellIn).toEqual(-2);
+        expect(app.items[0].quality).toEqual(1);
+    });
+    test('check second item object', () => {
+        expect(app.items[1].name).toEqual('B-DAWG Keychain');
+        expect(app.items[1].sellIn).toEqual(-4);
+        expect(app.items[1].quality).toEqual(0);
+    });
+    test('check third item object', () => {
+        expect(app.items[2].name).toEqual('B-DAWG Keychain');
+        expect(app.items[2].sellIn).toEqual(2);
+        expect(app.items[2].quality).toEqual(0);
+    });
+});
