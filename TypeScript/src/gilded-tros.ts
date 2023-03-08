@@ -62,7 +62,7 @@ export class GildedTros {
     }
 
     private calculateItem = (item: Item): Item => {
-        // Check if item is legendary
+        // Legendary Item: a legendary item, never has to be sold or decreases in Quality
         if (existsInArray(LEGENDARY_ITEMS, item.name)) {
             return item;
         }
