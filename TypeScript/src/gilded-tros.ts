@@ -1,5 +1,5 @@
 import { existsInArray, normalizeQuality } from './gilded-tros.utils';
-import {Item} from './item';
+import { Item } from './item';
 
 const LEGENDARY_ITEMS = ['B-DAWG Keychain'];
 const BACKSTAGE_PASSES = ['Backstage passes for Re:Factor', 'Backstage passes for HAXX'];
@@ -78,9 +78,7 @@ export class GildedTros {
     } 
 
     public updateQuality(): void {
-        for (let i = 0; i < this.items.length; i++) {
-            this.items[i] = this.updateItem(this.items[i]);
-        }
+        this.items = this.items.map(item => this.updateItem(item));
     }
 }
 
