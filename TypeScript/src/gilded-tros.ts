@@ -7,7 +7,6 @@ const MAX_QUALITY = 50;
 const LEGENDARY_QUALITY = 80;
 
 export class GildedTros {
-
     constructor(public items: Array<Item>) {
 
     }
@@ -45,6 +44,7 @@ export class GildedTros {
                 quality: 0
             }
         }
+
         return item;
     }
 
@@ -63,35 +63,44 @@ export class GildedTros {
                 }
             }
 
-            item.quality = item.quality + 1;
+            if (item.sellIn < 6) {
+                return {
+                    ...item,
+                    quality: item.quality + 3
+                };
+            }
 
             if (item.sellIn < 11) {
-                item.quality = item.quality + 1;
+                return {
+                    ...item,
+                    quality: item.quality + 2
+                };
             }
 
-            if (item.sellIn < 6) {
-                item.quality = item.quality + 1;
-            }
-
-            return item;
+            return {
+                ...item,
+                quality: item.quality + 1
+            };
         }
         
         if (this.isSmellyItem(item.name)) {
-
-            item.quality = item.sellIn < 0 ? item.quality - 4 : item.quality - 2;
-            
-            return item;
+            return {
+                ...item,
+                quality: item.sellIn < 0 ? item.quality - 4 : item.quality - 2
+            };
         }
 
         if (item.name === 'Good Wine') {
-            item.quality = item.quality + 1;
-            
-            return item;
+            return {
+                ...item,
+                quality: item.quality + 1
+            };
         }
 
-        item.quality = item.sellIn < 0 ? item.quality - 2 : item.quality - 1;
-
-        return item;
+        return {
+            ...item,
+            quality: item.sellIn < 0 ? item.quality - 2 : item.quality - 1
+        };
     }
 
     private updateItem = (item: Item): Item => {
