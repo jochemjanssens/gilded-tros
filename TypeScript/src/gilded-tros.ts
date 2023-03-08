@@ -13,6 +13,54 @@ export class GildedTros {
 
     }
 
+    // Backstage Passes:
+    // - increases in Quality as its SellIn value approaches;
+	// - Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but
+	// - Quality drops to 0 after the conference
+    private handleBackstagePasses = (item: Item): Item => {
+        if (item.sellIn < 0) {
+            return {
+                ...item,
+                quality: 0
+            }
+        }
+
+        if (item.sellIn < 6) {
+            return {
+                ...item,
+                quality: item.quality + 3
+            };
+        }
+
+        if (item.sellIn < 11) {
+            return {
+                ...item,
+                quality: item.quality + 2
+            };
+        }
+
+        return {
+            ...item,
+            quality: item.quality + 1
+        };
+    }
+
+    // Smelly items: degrade in Quality twice as fast as normal items
+    private handleSmellyItems = (item: Item): Item => {
+        return {
+            ...item,
+            quality: item.sellIn < 0 ? item.quality - 4 : item.quality - 2
+        };
+    }
+
+    // Increasing items: quality increasing the older it gets
+    private handleIncreasingItems = (item: Item): Item => {
+        return {
+            ...item,
+            quality: item.quality + 1
+        };
+    }
+
     private calculateItem = (item: Item): Item => {
         // Check if item is legendary
         if (existsInArray(LEGENDARY_ITEMS, item.name)) {
@@ -21,49 +69,16 @@ export class GildedTros {
 
         item.sellIn = item.sellIn - 1;
 
-        // Check if item is backstage pass
         if (existsInArray(BACKSTAGE_PASSES, item.name)) {
-            if (item.sellIn < 0) {
-                return {
-                    ...item,
-                    quality: 0
-                }
-            }
-
-            if (item.sellIn < 6) {
-                return {
-                    ...item,
-                    quality: item.quality + 3
-                };
-            }
-
-            if (item.sellIn < 11) {
-                return {
-                    ...item,
-                    quality: item.quality + 2
-                };
-            }
-
-            return {
-                ...item,
-                quality: item.quality + 1
-            };
+            return this.handleBackstagePasses(item);
         }
         
-        // Check if item is a smelly item
         if (existsInArray(SMELLY_ITEMS, item.name)) {
-            return {
-                ...item,
-                quality: item.sellIn < 0 ? item.quality - 4 : item.quality - 2
-            };
+            return this.handleSmellyItems(item);
         }
 
-        // Check if item is increasing in value over time
         if (existsInArray(INCREASING_ITEMS, item.name)) {
-            return {
-                ...item,
-                quality: item.quality + 1
-            };
+            return this.handleIncreasingItems(item)
         }
 
         return {
