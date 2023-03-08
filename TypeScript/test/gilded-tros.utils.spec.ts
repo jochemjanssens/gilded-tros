@@ -1,53 +1,19 @@
-import { isBackstagePass, isLegendary, isSmellyItem, normalizeQuality } from '../src/gilded-tros.utils';
+import { existsInArray, normalizeQuality } from '../src/gilded-tros.utils';
 import { Item } from '../src/item';
 
-describe('Test isBackstagePass', () => {
-    test('Return false when there are no backstage passes', () => {
-        const response = isBackstagePass([], "backstage")
+describe('Test existsInArray', () => {
+    test('Return false when there are no items in array', () => {
+        const response = existsInArray([], "backstage")
         expect(response).toEqual(false);
     });
     
-    test('Return true when there are a matching backstage pass', () => {
-        const response = isBackstagePass(["test", "backstage", "bckstg"], "backstage")
+    test('Return true when there are a matching item in array', () => {
+        const response = existsInArray(["test", "backstage", "bckstg"], "backstage")
         expect(response).toEqual(true);
     });
 
-    test('Return false when there are no a matching backstage passes', () => {
-        const response = isBackstagePass(["test", "bckstg"], "backstage")
-        expect(response).toEqual(false);
-    });
-});
-
-describe('Test isLegendary', () => {
-    test('Return false when there are no legendary items', () => {
-        const response = isLegendary([], "legendary")
-        expect(response).toEqual(false);
-    });
-    
-    test('Return true when there are a matching legendary item', () => {
-        const response = isLegendary(["gold", "legendary", "almost legendary"], "legendary")
-        expect(response).toEqual(true);
-    });
-
-    test('Return false when there are is no matching legendary items', () => {
-        const response = isLegendary(["gold", "almost legendary"], "legendary")
-        expect(response).toEqual(false);
-    });
-});
-
-describe('Test isSmellyItem', () => {
-    test('Return false when there are no smelly items', () => {
-        const response = isSmellyItem([], "smelly")
-        expect(response).toEqual(false);
-    });
-    
-    test('Return true when there are a matching smelly item', () => {
-        const response = isLegendary(["garbage", "smelly", "almost smelly"], "smelly")
-        expect(response).toEqual(true);
-    });
-
-    test('Return false when there are is no matching smelly items', () => {
-        const response = isLegendary(["gold", "almost smelly"], "smelly")
+    test('Return false when there is no matching item in array', () => {
+        const response = existsInArray(["test", "bckstg"], "backstage")
         expect(response).toEqual(false);
     });
 });

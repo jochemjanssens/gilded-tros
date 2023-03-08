@@ -1,19 +1,11 @@
 import { Item } from "./item";
 
-export const isBackstagePass = (backstagePasses: string[], itemName: string): boolean => {
-    return backstagePasses.some(backstagePass => itemName === backstagePass);
-}
-
-export const isLegendary = (legendaryItems: string[], itemName: string): boolean => {
-    return legendaryItems.some(legendaryItem => itemName === legendaryItem);
-}
-
-export const isSmellyItem = (smellyItems: string[], itemName: string): boolean => {
-    return smellyItems.some(smellyItem => itemName === smellyItem);
+export const existsInArray = (array: string[], itemName: string): boolean => {
+    return array.some(item => itemName === item);
 }
 
 export const normalizeQuality = (item: Item, maxQuality: number, legendaryQuality: number, legendaryItems: string[]): Item => {
-    if (isLegendary(legendaryItems, item.name)) {
+    if (existsInArray(legendaryItems, item.name)) {
         return {
             ...item,
             quality: legendaryQuality
