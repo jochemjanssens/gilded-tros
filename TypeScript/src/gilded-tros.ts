@@ -89,11 +89,11 @@ export class GildedTros {
 
     private updateItem = (item: Item): Item => {
         const calculatedItem = this.calculateItem(item)
-        return normalizeQuality(calculatedItem, MAX_QUALITY, LEGENDARY_QUALITY, LEGENDARY_ITEMS);
+        const normalizedItem = normalizeQuality(calculatedItem, MAX_QUALITY, LEGENDARY_QUALITY, LEGENDARY_ITEMS);
+        return new Item(normalizedItem.name, normalizedItem.sellIn, normalizedItem.quality);
     } 
 
     public updateQuality(): void {
         this.items = this.items.map(item => this.updateItem(item));
     }
 }
-
