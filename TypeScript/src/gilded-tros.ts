@@ -25,14 +25,14 @@ export class GildedTros {
             }
         }
 
-        if (item.sellIn < 6) {
+        if (item.sellIn <= 5) {
             return {
                 ...item,
                 quality: item.quality + 3
             };
         }
 
-        if (item.sellIn < 11) {
+        if (item.sellIn <= 10) {
             return {
                 ...item,
                 quality: item.quality + 2
